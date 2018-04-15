@@ -1,10 +1,10 @@
 import ch.hslu.ai.connect4.Player;
 
 
-public class PlayerForTeam02 extends Player{
+public class PlayerForTeam05 extends Player{
 
-    public PlayerForTeam02(){
-        super("Player for Team02");
+    public PlayerForTeam05(){
+        super("Player for Team05");
     }
 
     /**
