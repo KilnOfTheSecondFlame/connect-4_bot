@@ -1,0 +1,15 @@
+# Compiled class file
+*.class
+
+# Package Files
+*.jar
+
+# intellij idea
+**/*.iml
+.idea/
+
+# compile folder
+out/
+
+/target/
+**/*.log
