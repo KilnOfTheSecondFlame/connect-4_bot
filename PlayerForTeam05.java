@@ -27,5 +27,5 @@ public class PlayerForTeam05 extends Player{
 
     private int evaluateNode(int column, char[][] board){ return 0;}
 
-    private int minimax(int column, char[][] board, int depth, Player maximizingPlayer){ return 0;}
+    private int alphabeta(int column, char[][] board, int depth, int alpha, int beta, Player maximizingPlayer){ return 0;}
 }
