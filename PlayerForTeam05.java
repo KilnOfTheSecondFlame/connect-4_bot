@@ -49,6 +49,7 @@ public class PlayerForTeam05 extends Player{
             }
             return beta;
         }
+        return 0;
     }
 
     private boolean columnIsFull(final char[][] board, final int column){
