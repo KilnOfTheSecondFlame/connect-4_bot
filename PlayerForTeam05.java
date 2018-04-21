@@ -36,7 +36,7 @@ public class PlayerForTeam05 extends Player {
         return alphabetas.indexOf(Collections.max(alphabetas));
     }
 
-    private double evaluateNode(int column, char[][] board) {
+    private double evaluateNode(final int column, final char[][] board) {
         // TODO Heuristics go in here
         return 0;
     }
@@ -45,21 +45,21 @@ public class PlayerForTeam05 extends Player {
         return 0;
     }
 
-    private double alphabeta(int column, char[][] board, int depth, double alpha, double beta, boolean maximizingPlayer) {
+    private double alphabeta(final int column, final char[][] board, final int depth, double alpha, double beta, final boolean maximizingPlayer) {
         if (depth == 0 || columnIsFull(board, column)) {
             return evaluateNode(column, board);
         }
         if (maximizingPlayer) {
-            for (int i = 0; i < board.length; i++) {
-                alpha = Math.max(alpha, alphabeta(i, board, depth - 1, alpha, beta, false));
+            for (int max_column = 0; max_column < board.length; max_column++) {
+                alpha = Math.max(alpha, alphabeta(max_column, addToThisColumn(max_column, board, this.getSymbol()), depth - 1, alpha, beta, false));
                 if (beta <= alpha) {
                     break;
                 }
                 return alpha;
             }
         } else {
-            for (int i = 0; i < board.length; i++) {
-                beta = Math.min(beta, alphabeta(i, board, depth - 1, alpha, beta, true));
+            for (int min_column = 0; min_column < board.length; min_column++) {
+                beta = Math.min(beta, alphabeta(min_column, addToThisColumn(min_column, board, '$'), depth - 1, alpha, beta, true));
                 if (beta <= alpha) {
                     break;
                 }
@@ -72,5 +72,16 @@ public class PlayerForTeam05 extends Player {
     private boolean columnIsFull(final char[][] board, final int column) {
         if (board[column][board[column].length - 1] == ('-')) return false;
         return true;
+    }
+
+    private char[][] addToThisColumn(final int column, final char[][] board, final char symbol) {
+        for (int cell = 0; cell < board[column].length; cell++) {
+            if (board[column][cell] == '-') {
+                char[][] result_board = board;
+                result_board[column][cell] = symbol;
+                return result_board;
+            }
+        }
+        throw new IndexOutOfBoundsException();
     }
 }
