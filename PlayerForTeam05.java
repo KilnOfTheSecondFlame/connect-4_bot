@@ -2,6 +2,7 @@ import ch.hslu.ai.connect4.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -41,8 +42,52 @@ public class PlayerForTeam05 extends Player {
         return 0;
     }
 
-    private double possibleFoursInThisLine(final char[] line) {
-        return 0;
+    /*
+    Possible four = 1;
+    Actual four = 10;
+    Enemy four = -infinity;
+     */
+    private double lineHeuristicValue(final char[] line) {
+        double result = 0.0;
+        char playerSymbol = this.getSymbol();
+        List<Integer> playerLines = new ArrayList<>();
+        int playerLine = 0;
+        int possPlayerLine = 0;
+        int enemyLine = 0;
+        for (int index = 0; index < line.length; index++) {
+            if (line[index] == '-') {
+                possPlayerLine++;
+                playerLine = 0;
+                enemyLine = 0;
+            }
+            else if (line[index] == playerSymbol) {
+                playerLine++;
+                possPlayerLine++;
+                enemyLine = 0;
+            }
+            else {
+                enemyLine++;
+                playerLines.add(possPlayerLine);
+                possPlayerLine = 0;
+                playerLine = 0;
+            }
+            if (enemyLine > 3) {
+                return -inf;
+            }
+            if (playerLine > 3) {
+                result += 10;
+            }
+        }
+        playerLines.add(possPlayerLine);
+        Iterator<Integer> lineIterator = playerLines.iterator();
+        while (lineIterator.hasNext()) {
+            int value = lineIterator.next();
+            if (value > 3) {
+                result += value-3;
+            }
+        }
+        return result;
+
     }
 
     private double alphabeta(final int column, final char[][] board, final int depth, double alpha, double beta, final boolean maximizingPlayer) {
