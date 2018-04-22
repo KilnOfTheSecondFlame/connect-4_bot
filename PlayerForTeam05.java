@@ -51,6 +51,30 @@ public class PlayerForTeam05 extends Player {
             }
             value += lineHeuristicValue(line);
         }
+        // value of left diagonals (start with 4th row, as lower ones can't have any 4 symbols in a line
+        for (int rowIndex = 3; rowIndex < board[0].length; rowIndex++) {
+            char[] line = new char[rowIndex + 1];
+            int columnIndex = 0;
+            for (int row = rowIndex; row >= 0; row--) {
+                line[columnIndex] = board[columnIndex][row];
+                columnIndex++;
+            }
+            value += lineHeuristicValue(line);
+        }
+        for (int columnIndex = 0; columnIndex <= board.length - 4; columnIndex++) {
+            int columnLoopIndex = columnIndex;
+            char[] line = new char[board[columnIndex].length];
+            int lineIndex = 0;
+            for (int rowIndex = board[columnIndex].length - 1; rowIndex >= 0; rowIndex++) {
+                line[lineIndex] = board[columnLoopIndex][rowIndex];
+                columnLoopIndex++;
+                lineIndex++;
+                if (columnLoopIndex >= board.length) {
+                    break;
+                }
+            }
+            value += lineHeuristicValue(line);
+        }
         return value;
     }
 
