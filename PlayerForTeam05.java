@@ -38,13 +38,25 @@ public class PlayerForTeam05 extends Player {
     }
 
     private double evaluateNode(final int column, final char[][] board) {
-        // TODO Heuristics go in here
-        return 0;
+        double value = 0;
+        for (int index = 0; index < board.length; index++) {
+            // value of rows
+            char[] line = new char[board.length];
+            System.arraycopy(board[index], 0, line, 0, board[index].length);
+            value += lineHeuristicValue(line);
+            // value of columns
+            line = new char[board[index].length];
+            for (int row = 0; row < board[index].length; row++) {
+                line[row] = board[index][row];
+            }
+            value += lineHeuristicValue(line);
+        }
+        return value;
     }
 
     /*
     Possible four = 1;
-    Actual four = 10;
+    Actual four = 100;
     Enemy four = -infinity;
      */
     private double lineHeuristicValue(final char[] line) {
@@ -59,13 +71,11 @@ public class PlayerForTeam05 extends Player {
                 possPlayerLine++;
                 playerLine = 0;
                 enemyLine = 0;
-            }
-            else if (line[index] == playerSymbol) {
+            } else if (line[index] == playerSymbol) {
                 playerLine++;
                 possPlayerLine++;
                 enemyLine = 0;
-            }
-            else {
+            } else {
                 enemyLine++;
                 playerLines.add(possPlayerLine);
                 possPlayerLine = 0;
@@ -75,7 +85,7 @@ public class PlayerForTeam05 extends Player {
                 return -inf;
             }
             if (playerLine > 3) {
-                result += 10;
+                result += 100;
             }
         }
         playerLines.add(possPlayerLine);
@@ -83,11 +93,10 @@ public class PlayerForTeam05 extends Player {
         while (lineIterator.hasNext()) {
             int value = lineIterator.next();
             if (value > 3) {
-                result += value-3;
+                result += value - 3;
             }
         }
         return result;
-
     }
 
     private double alphabeta(final int column, final char[][] board, final int depth, double alpha, double beta, final boolean maximizingPlayer) {
