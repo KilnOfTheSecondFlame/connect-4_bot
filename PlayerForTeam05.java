@@ -65,7 +65,7 @@ public class PlayerForTeam05 extends Player {
             int columnLoopIndex = columnIndex;
             char[] line = new char[board[columnIndex].length];
             int lineIndex = 0;
-            for (int rowIndex = board[columnIndex].length - 1; rowIndex >= 0; rowIndex++) {
+            for (int rowIndex = board[columnIndex].length - 1; rowIndex >= 0; rowIndex--) {
                 line[lineIndex] = board[columnLoopIndex][rowIndex];
                 columnLoopIndex++;
                 lineIndex++;
@@ -79,9 +79,11 @@ public class PlayerForTeam05 extends Player {
         for (int rowIndex = 3; rowIndex < board[0].length; rowIndex++) {
             char[] line = new char[rowIndex + 1];
             int columnIndex = board.length - 1;
+            int lineIndex = 0;
             for (int row = rowIndex; row >= 0; row--) {
-                line[columnIndex] = board[columnIndex][row];
+                line[lineIndex] = board[columnIndex][row];
                 columnIndex--;
+                lineIndex++;
             }
             value += lineHeuristicValue(line);
         }
@@ -89,7 +91,7 @@ public class PlayerForTeam05 extends Player {
             int columnLoopIndex = columnIndex;
             char[] line = new char[board[columnIndex].length];
             int lineIndex = 0;
-            for (int rowIndex = board[columnIndex].length - 1; rowIndex >= 0; rowIndex++) {
+            for (int rowIndex = board[columnIndex].length - 1; rowIndex >= 0; rowIndex--) {
                 line[lineIndex] = board[columnLoopIndex][rowIndex];
                 columnLoopIndex--;
                 lineIndex++;

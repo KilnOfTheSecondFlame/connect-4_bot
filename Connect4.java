@@ -36,10 +36,11 @@ public class Connect4 {
 			new RandomPlayer("Captain Obvious"),
 			new RandomPlayer("Chuck Norris"),
 			new RandomPlayer("Homer Simpson"),
+			new PlayerForTeam05()
 		};
 		
 		// Start a single game with GUI:	
-		singleGameMode(players[0], players[1]);
+		singleGameMode(players[0], players[4]);
 		
 		// Start a tournament with many rounds:
 		//tournamentMode(players, 1000);
