@@ -27,7 +27,6 @@ public class PlayerForTeam05 extends Player {
      * @param board The current game board
      * @return The columns number where you want to put your disc
      */
-
     @Override
     public int play(final char[][] board) {
         List<Double> alphabetas = new ArrayList<>();
