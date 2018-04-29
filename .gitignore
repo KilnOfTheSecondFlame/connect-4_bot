@@ -13,10 +13,12 @@
 .gradle/
 .settings/
 .vscode/
+.classpath
 
 # compile folder
 out/
 build/
+bin/
 
 /target/
 **/*.log
