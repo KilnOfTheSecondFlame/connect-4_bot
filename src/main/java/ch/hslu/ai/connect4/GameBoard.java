@@ -46,7 +46,6 @@ public final class GameBoard extends JFrame {
 	 * @param player1 The first mover
 	 * @param player2 The second mover
 	 */
-
 	public GameBoard(Game game, int sleep, Player player1, Player player2) {
 
 		super("Connect-4");

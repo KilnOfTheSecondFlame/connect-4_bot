@@ -44,7 +44,6 @@ public class HeuristicValueDeterm {
             for (int row = 0; row < board[index].length; row++) {
                 line[row] = board[index][row];
             }
-            System.out.println(line + " : " + value);
             value += lineHeuristicValue(line);
 
         }

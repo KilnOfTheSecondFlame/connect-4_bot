@@ -4,6 +4,8 @@ import ch.hslu.ai.connect4.team05.HeuristicValueDeterm;
 
 import java.lang.annotation.Target;
 
+import javax.swing.plaf.metal.MetalBorders.PaletteBorder;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,32 +25,22 @@ public class PlayerForTeam05Test {
         this.board = new char[COLUMNS][ROWS];
     }
 
+    
+    
     @Test
-    public void testLinerHeuristicValue() {
-        HeuristicValueDeterm heuristicValueDeterm = new HeuristicValueDeterm(board, 'x');
-
-        double v1 = heuristicValueDeterm.lineHeuristicValue(new char[]{ '-', '-', '-','x', 'o', 'o' });
-        double v2 = heuristicValueDeterm.lineHeuristicValue(new char[]{ '-', '-', 'o','x', 'o', 'o' });
-        double v3 = heuristicValueDeterm.lineHeuristicValue(new char[]{ 'x', 'x', 'x','x', 'o', 'o' });
-        double v4 = heuristicValueDeterm.lineHeuristicValue(new char[]{ 'x', 'x', 'o','o', 'o', 'o' });
-
-        assertEquals(1.0, v1, 0.02);
-        assertEquals(0.0, v2, 0.02);
-        assertEquals(101.0, v3, 0.02);
-        assertEquals(Double.NEGATIVE_INFINITY, v4, 0.02);
-    }
-
-    @Test
-    public void testBoardHeuristicValue() {
+    public void testGetSecondPlay() {
         char[][] board = new char[][] {
-            "---x-o-".toCharArray(),
-            "---x-o-".toCharArray(),
-            "---x-o-".toCharArray(),
-            "x-ooxx-".toCharArray()
+            "-------".toCharArray(),
+            "-------".toCharArray(),
+            "------a".toCharArray(),
+            "-------".toCharArray(),
+            "-------".toCharArray(),
+            "-------".toCharArray()
         };
 
-        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
+        int action = player.play(board);
 
-        assertEquals(4.0, value, 0.2);
+        assertEquals(0, action);
     }
+
 }

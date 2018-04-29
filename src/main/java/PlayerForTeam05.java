@@ -1,3 +1,4 @@
+import ch.hslu.ai.connect4.Game;
 import ch.hslu.ai.connect4.Player;
 import ch.hslu.ai.connect4.team05.HeuristicValueDeterm;
 
@@ -29,6 +30,12 @@ public class PlayerForTeam05 extends Player {
      */
     @Override
     public int play(final char[][] board) {
+        for (char[] var : board) {
+            System.out.println(new String(var));
+        }
+        System.out.println(new HeuristicValueDeterm(board, this.getSymbol()).evaluate());
+        System.out.println("######################");
+
         List<Double> alphabetas = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             alphabetas.add(alphabeta(i, board, 3, -inf, inf, true));
@@ -61,18 +68,23 @@ public class PlayerForTeam05 extends Player {
     }
 
     private boolean columnIsFull(final char[][] board, final int column) {
-        if (board[column][board[column].length - 1] == ('-')) return false;
-        return true;
+        if (board[column][0] != (Game.EMPTY)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private char[][] addToThisColumn(final int column, final char[][] board, final char symbol) {
-        for (int cell = 0; cell < board[column].length; cell++) {
-            if (board[column][cell] == '-') {
-                char[][] result_board = board;
-                result_board[column][cell] = symbol;
-                return result_board;
+        if(board[column][0] != Game.EMPTY) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        for (int cell = board[column].length - 1; cell >= 0; cell--) {
+            if (board[column][cell] != Game.EMPTY) {
+                board[column][cell] = symbol;
             }
         }
-        throw new IndexOutOfBoundsException();
+        return board;
     }
 }
