@@ -3,13 +3,20 @@
 
 # Package Files
 *.jar
+!/gradle/wrapper/gradle-wrapper.jar
 
 # intellij idea
 **/*.iml
 .idea/
 
+# other ideas
+.gradle/
+.settings/
+.vscode/
+
 # compile folder
 out/
+build/
 
 /target/
 **/*.log
