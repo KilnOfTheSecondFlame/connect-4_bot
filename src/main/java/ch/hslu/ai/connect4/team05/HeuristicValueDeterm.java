@@ -97,10 +97,11 @@ public class HeuristicValueDeterm {
         return array;
     }
 
-    /*
-    Possible four = 1;
-    Actual four = 100;
-    Enemy four = -infinity;
+    /*  
+    I can Win next = 1
+    I Win = 1
+    Enemy Win next = -1
+    Enemy Win = -1
      */
     public double lineHeuristicValue(final char[] line) {
         double result = 0.0;

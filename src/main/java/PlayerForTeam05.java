@@ -67,7 +67,7 @@ public class PlayerForTeam05 extends Player {
         return 0;
     }
 
-    private boolean columnIsFull(final char[][] board, final int column) {
+    public static boolean columnIsFull(final char[][] board, final int column) {
         if (board[column][0] != (Game.EMPTY)) {
             return false;
         } else {
