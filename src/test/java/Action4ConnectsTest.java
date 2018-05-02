@@ -109,9 +109,9 @@ public class Action4ConnectsTest {
             "--xxx".toCharArray(),
         };
 
-        assertEquals(0, (new Action4Connects(board, (char[][] b) -> 0.0, 'x', 1)).getAction());
-        assertEquals(1, (new Action4Connects(board2, (char[][] b) -> 0.0, 'x', 1)).getAction());
-        assertEquals(2, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x', 1)).getAction());
+        assertEquals(0, (new Action4Connects(board, (char[][] b) -> 0.0, 'x')).getAction());
+        assertEquals(1, (new Action4Connects(board2, (char[][] b) -> 0.0, 'x')).getAction());
+        assertEquals(2, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x')).getAction());
     }
     
     public void testChoosingBlockingStrategy() {
@@ -138,10 +138,10 @@ public class Action4ConnectsTest {
             "----o".toCharArray()
         };
 
-        assertEquals(1, (new Action4Connects(board, (char[][] b) -> 0.0, 'x', 1)).getAction());
-        assertEquals(0, (new Action4Connects(board2, (char[][] b) -> 0.0, 'x', 1)).getAction());
-        assertEquals(3, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x', 1)).getAction());
-        assertEquals(1, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x', 1)).getAction());
+        assertEquals(1, (new Action4Connects(board, (char[][] b) -> 0.0, 'x')).getAction());
+        assertEquals(0, (new Action4Connects(board2, (char[][] b) -> 0.0, 'x')).getAction());
+        assertEquals(3, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x')).getAction());
+        assertEquals(1, (new Action4Connects(board3, (char[][] b) -> 0.0, 'x')).getAction());
     }
 
     @Test
