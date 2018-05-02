@@ -26,8 +26,8 @@ public class Action4Connects {
         private final Node parent;
         private final char[][] board;
 
-        private Double alpha = inf;
-        private Double beta = -inf;
+        private Double alpha = -inf;
+        private Double beta = inf;
 
         private Position changed;
 
@@ -55,8 +55,8 @@ public class Action4Connects {
         public String toString() {
             return new StringBuilder()
                 .append("[ ")
-                .append(" maximizingPlayer: ").append(maximizingPlayer).append(",")
                 .append(" parent: ").append(parent).append(",")
+                .append(" maximizingPlayer: ").append(maximizingPlayer).append(",")
                 .append(" alpha: ").append(alpha).append(",")
                 .append(" beta: ").append(beta).append(",")
                 .append(" value: ").append(value).append(",")
@@ -213,12 +213,16 @@ public class Action4Connects {
                 child.changed = change;
                 child.value = alphaBetaPruning(child, deph + 1);
 
-                if(
-                    (node.maximizingPlayer && child.value > node.value) || 
-                    (!node.maximizingPlayer && child.value < node.value)
-                ) {
-                    node.value = child.value;
+                if(node.maximizingPlayer && child.value > node.value) {
+                    node.alpha = node.value = child.value;
                     node.action = column;
+
+                    if(node.alpha > node.beta) break;
+                } else if(!node.maximizingPlayer && child.value < node.value) {
+                    node.beta = node.value = child.value;
+                    node.action = column;
+
+                    if(node.beta <= node.alpha) break;
                 }
             }
         }
