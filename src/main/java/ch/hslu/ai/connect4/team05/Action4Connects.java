@@ -195,6 +195,24 @@ public class Action4Connects {
         System.out.println("#################");
     }
 
+    private void iterateOver() {
+        
+    }
+
+    private Double alphaBetaPruningMax(final Node node, final int deph) {
+        if(playerWins(node.board, node.changed, node.board[node.changed.Column][node.changed.Row])) {
+            return node.value = 1.0;
+        }
+
+        if(deph >= maxDeph) {
+            return heuristicFunction.apply(node.board);
+        }
+
+
+
+        return 0.0;
+    }
+
     private Double alphaBetaPruning(final Node node, final int deph) {
         // finish current tree if current node is winner or max deph reached
         // the parent node can not be a winner, since game would not have started
@@ -225,7 +243,7 @@ public class Action4Connects {
         for(int column = 0; column < node.board.length; column++) {
             if(!columnIsFull(node.board, column)) {
                 Position change = getNewPosition(column, node.board);
-                Node child = new Node(addToPosition(change, node.board, player), node, !node.maximizingPlayer);
+                Node child = new Node(addToPosition(change, node.board, node.maximizingPlayer ? player : otherPlayer), node, !node.maximizingPlayer);
                 child.changed = change;
                 child.value = alphaBetaPruning(child, deph + 1);
 
