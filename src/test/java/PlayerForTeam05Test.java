@@ -24,10 +24,9 @@ public class PlayerForTeam05Test {
         this.player = new PlayerForTeam05();
         this.board = new char[COLUMNS][ROWS];
     }
-
-    
     
     @Test
+    @Ignore
     public void testGetSecondPlay() {
         char[][] board = new char[][] {
             "-------".toCharArray(),
@@ -41,6 +40,52 @@ public class PlayerForTeam05Test {
         int action = player.play(board);
 
         assertEquals(0, action);
+    }
+
+    @Test
+    public void testBlockingAction() {/*
+        int a1 = player.play(new char[][] {
+            "------".toCharArray(),
+            "------".toCharArray(),
+            "------".toCharArray(),
+            "------".toCharArray(),
+            "------".toCharArray(),
+            "-----a".toCharArray(),
+            "------".toCharArray(),
+        });
+        int a2 = player.play(new char[][] {
+            "-----e".toCharArray(),
+            "------".toCharArray(),
+            "-----a".toCharArray(),
+            "-----a".toCharArray(),
+            "------".toCharArray(),
+            "------".toCharArray(),
+            "------".toCharArray(),
+        });
+        int a3 = player.play(new char[][] {
+            "----ee".toCharArray(),
+            "------".toCharArray(),
+            "-----a".toCharArray(),
+            "-----a".toCharArray(),
+            "------".toCharArray(),
+            "-----a".toCharArray(),
+            "------".toCharArray(),
+        });*/
+
+        int a4 = player.play(new char[][] {
+            "--eaaa".toCharArray(),
+            "------".toCharArray(),
+            "-----e".toCharArray(),
+            "-----e".toCharArray(),
+            "------".toCharArray(),
+            "-----e".toCharArray(),
+            "------".toCharArray(),
+        });
+/*
+        assertEquals(0, a1);
+        assertEquals(1, a2);
+        assertEquals(4, a3);*/
+        assertEquals(4, a4);
     }
 
 }

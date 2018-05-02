@@ -55,12 +55,12 @@ public class Action4Connects {
         public String toString() {
             return new StringBuilder()
                 .append("[ ")
-                .append("maximizingPlayer: ").append(maximizingPlayer)
-                .append("parent: ").append(parent)
-                .append("alpha: ").append(alpha)
-                .append("beta: ").append(beta)
-                .append("value: ").append(value)
-                .append("action: ").append(action)
+                .append(" maximizingPlayer: ").append(maximizingPlayer).append(",")
+                .append(" parent: ").append(parent).append(",")
+                .append(" alpha: ").append(alpha).append(",")
+                .append(" beta: ").append(beta).append(",")
+                .append(" value: ").append(value).append(",")
+                .append(" action: ").append(action)
                 .append(" ]")
                 .toString();
         }
@@ -82,6 +82,9 @@ public class Action4Connects {
         this.player = player;
         this.board = board;
         this.otherPlayer = getOtherPlayer(board, player);
+
+        System.out.println("you: " + this.player);
+        System.out.println("otherPlayer: " + this.otherPlayer);
 
         this.root = new Node(board, null, true);
     }
@@ -117,6 +120,14 @@ public class Action4Connects {
     }
 
     public static boolean columnIsFull(final char[][] board, final int column) {
+        try {
+            new String(board[column]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+
+            printBoard(board);
+            System.out.println(column);
+            throw new RuntimeException(e);
+        }
         return board[column][0] != (Game.EMPTY);
     }
 
@@ -187,31 +198,61 @@ public class Action4Connects {
     private Double alphaBetaPruning(final Node node, final int deph) {
         // finish current tree if current node is winner or max deph reached
         // the parent node can not be a winner, since game would not have started
-        boolean playerHasWon = node.parent != null ? playerWins(node.board, node.changed, player) : false;
-        if(playerHasWon) { 
-            return node.value = !node.maximizingPlayer ? 1.0 : -1.0;
-        } else if(deph >= maxDeph) {
+        if(node.parent != null) {
+            boolean winner = playerWins(node.board, node.changed, node.board[node.changed.Column][node.changed.Row]);
+
+            if(winner) {
+                System.out.println("player won : " + node.board[node.changed.Column][node.changed.Row] + " : p - " + player);
+                System.out.println(node.board[node.changed.Column][node.changed.Row] == player ? "player won" : "player lost");
+            }
+
+            if(
+                winner && node.board[node.changed.Column][node.changed.Row] == player
+            ) {
+                return node.value = 1.0;
+            } else if(
+                winner && node.board[node.changed.Column][node.changed.Row] != player
+            ) {
+                return node.value = -1.0;
+            }
+        }
+
+        if(deph >= maxDeph) {
             return node.value = heuristicFunction.apply(node.board);
         }
 
         // extend tree with possible actions and return best value
-        for(int column = 0; column < board.length; column++) {
+        for(int column = 0; column < node.board.length; column++) {
             if(!columnIsFull(node.board, column)) {
-                Position change = getNewPosition(column, board);
-                Node child = new Node(addToPosition(change, board, player), node, !node.maximizingPlayer);
-                child.changed =  change;
-                child.action = column;
+                Position change = getNewPosition(column, node.board);
+                Node child = new Node(addToPosition(change, node.board, player), node, !node.maximizingPlayer);
+                child.changed = change;
                 child.value = alphaBetaPruning(child, deph + 1);
+
+                if(node.maximizingPlayer && child.value > node.value) {
+                    node.value = child.value;
+                    node.action = column;
+                } else if (!node.maximizingPlayer && child.value < node.value) {
+                    node.value = child.value;
+                    node.action = column;
+                }
 
                 if(
                     (node.maximizingPlayer && child.value > node.value) ||
                     (!node.maximizingPlayer && child.value < node.value)
                 ) {
-                    node.value = child.value;
-                    node.action = child.action;
+                    System.out.println("prevered action: " + column + " value: " + node.value + " - p: " + (node.maximizingPlayer ? player : otherPlayer));
+                    System.out.println(node.maximizingPlayer ? "player" : "enemy");
+                    printBoard(node.board);
                 }
             }
         }
+
+        if(node.parent == null) 
+            System.out.println("####################### OUT");
+        else
+            System.out.println("####################### CHILD");
+        node.print();
 
         return node.value;
     }
