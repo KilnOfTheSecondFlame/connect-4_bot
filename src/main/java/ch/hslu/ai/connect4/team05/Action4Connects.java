@@ -195,46 +195,20 @@ public class Action4Connects {
         System.out.println("#################");
     }
 
-    private void iterateOver() {
-        
-    }
-
-    private Double alphaBetaPruningMax(final Node node, final int deph) {
-        if(playerWins(node.board, node.changed, node.board[node.changed.Column][node.changed.Row])) {
-            return node.value = 1.0;
-        }
-
-        if(deph >= maxDeph) {
-            return heuristicFunction.apply(node.board);
-        }
-
-
-
-        return 0.0;
-    }
-
     private Double alphaBetaPruning(final Node node, final int deph) {
         // finish current tree if current node is winner or max deph reached
         // the parent node can not be a winner, since game would not have started
         if(node.parent != null) {
             boolean winner = playerWins(node.board, node.changed, node.board[node.changed.Column][node.changed.Row]);
 
-            if(winner) {
-                System.out.println("player won : " + node.board[node.changed.Column][node.changed.Row] + " : p - " + player);
-                System.out.println(node.board[node.changed.Column][node.changed.Row] == player ? "player won" : "player lost");
-            }
-
-            if(
-                winner && node.board[node.changed.Column][node.changed.Row] == player
-            ) {
+            if(winner && node.board[node.changed.Column][node.changed.Row] == player) {
                 return node.value = 1.0;
-            } else if(
-                winner && node.board[node.changed.Column][node.changed.Row] != player
-            ) {
+            } else if(winner && node.board[node.changed.Column][node.changed.Row] != player) {
                 return node.value = -1.0;
             }
         }
 
+        // limit to maxDeph
         if(deph >= maxDeph) {
             return node.value = heuristicFunction.apply(node.board);
         }
@@ -247,30 +221,15 @@ public class Action4Connects {
                 child.changed = change;
                 child.value = alphaBetaPruning(child, deph + 1);
 
-                if(node.maximizingPlayer && child.value > node.value) {
-                    node.value = child.value;
-                    node.action = column;
-                } else if (!node.maximizingPlayer && child.value < node.value) {
-                    node.value = child.value;
-                    node.action = column;
-                }
-
                 if(
-                    (node.maximizingPlayer && child.value > node.value) ||
+                    (node.maximizingPlayer && child.value > node.value) || 
                     (!node.maximizingPlayer && child.value < node.value)
                 ) {
-                    System.out.println("prevered action: " + column + " value: " + node.value + " - p: " + (node.maximizingPlayer ? player : otherPlayer));
-                    System.out.println(node.maximizingPlayer ? "player" : "enemy");
-                    printBoard(node.board);
+                    node.value = child.value;
+                    node.action = column;
                 }
             }
         }
-
-        if(node.parent == null) 
-            System.out.println("####################### OUT");
-        else
-            System.out.println("####################### CHILD");
-        node.print();
 
         return node.value;
     }

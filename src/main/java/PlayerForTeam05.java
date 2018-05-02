@@ -33,7 +33,7 @@ public class PlayerForTeam05 extends Player {
     public int play(final char[][] board) {
         Action4Connects.printBoard(board);
 
-        int action = new Action4Connects(board, (b) -> 0.0, this.getSymbol(), 3).getAction();
+        int action = new Action4Connects(board, (b) -> 0.0, this.getSymbol(), 5).getAction();
         System.out.println("My Action:" + action);
         return action;
     }
