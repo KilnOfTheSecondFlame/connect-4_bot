@@ -138,19 +138,11 @@ public class Action4Connects {
      * @param player the symbol to check if won
      */
     public static boolean playerWins(char[][] board, Position changed, char player) {
-        // check vertical
-        int fromColumn = changed.Column - 3 > 0 ? changed.Column - 3 : 0;
-        int toColumn = changed.Column + 3 < board.length ? changed.Column + 3 : board.length - 1;
-        int fromRow = changed.Row - 3 > 0 ? changed.Row - 3 : 0;
-        int toRow = changed.Row + 3 < board[0].length ? changed.Row + 3 : board[0].length;
-
-        char[][] subboard = cutBoard(board, fromColumn, toColumn, fromRow, toRow);
-
         int matches = 0;
-        matches += new PatternMatcher(PatternMatcher.DIAGONAL_LEFT_RIGHT_LINE, player).match(subboard);
-        matches += new PatternMatcher(PatternMatcher.DIAGONAL_RIGHT_LEFT_LINE, player).match(subboard);
-        matches += new PatternMatcher(PatternMatcher.HORIZONTAL_LINE, player).match(subboard);
-        matches += new PatternMatcher(PatternMatcher.VERTICAL_LINE, player).match(subboard);
+        matches += new PatternMatcher(PatternMatcher.DIAGONAL_LEFT_RIGHT_LINE, player).match(board);
+        matches += new PatternMatcher(PatternMatcher.DIAGONAL_RIGHT_LEFT_LINE, player).match(board);
+        matches += new PatternMatcher(PatternMatcher.HORIZONTAL_LINE, player).match(cutBoard(board, changed.Column, changed.Column, 0, board[0].length - 1));
+        matches += new PatternMatcher(PatternMatcher.VERTICAL_LINE, player).match(cutBoard(board, 0, board.length - 1, changed.Row, changed.Row));
 
         return matches > 0;
     }
