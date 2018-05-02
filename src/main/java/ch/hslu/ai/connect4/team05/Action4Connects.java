@@ -32,29 +32,37 @@ public class Action4Connects {
         private Position changed;
 
         private Double value;
-        private int action;
+        private int action = -1;
 
         private Node(char[][] board, Node parent, Boolean maximizingPlayer) {
             this.board = board;
             this.parent = parent;
             this.maximizingPlayer = maximizingPlayer;
+
+            if(parent != null) {
+                this.alpha = parent.alpha;
+                this.beta = parent.beta;
+            }
+            this.value = maximizingPlayer ? -inf : inf;
         }
 
-        /**
-         * Return children generic by returning all possible actions
-         */
-        private List<Node> getChildren(char player) {
-            List<Node> children = new ArrayList<>(board.length);
-            for(int column = 0; column < board.length; column++) {
-                if(!columnIsFull(board, column)) {
-                    Position change = getNewPosition(column, board);
-                    Node child = new Node(addToPosition(change, board, player), parent, !maximizingPlayer);
-                    child.changed =  change;
-                    child.action = column;
-                    children.add(child);
-                }
-            }
-            return children;
+        public void print() {
+            System.out.println(this.toString());
+            printBoard(this.board);
+        }
+
+        @Override
+        public String toString() {
+            return new StringBuilder()
+                .append("[ ")
+                .append("maximizingPlayer: ").append(maximizingPlayer)
+                .append("parent: ").append(parent)
+                .append("alpha: ").append(alpha)
+                .append("beta: ").append(beta)
+                .append("value: ").append(value)
+                .append("action: ").append(action)
+                .append(" ]")
+                .toString();
         }
     }
 
@@ -101,7 +109,7 @@ public class Action4Connects {
     public static char[][] cutBoard(char[][] board, int fromColumn, int toColumn, int fromRow, int toRow) {
         final char[][] result = new char[toColumn - fromColumn + 1][];
         for (int i = fromColumn; i <= toColumn; i++) {
-            result[i] = Arrays.copyOfRange(board[i], fromRow, toRow);
+            result[i - fromColumn] = Arrays.copyOfRange(board[i], fromRow, toRow + 1);
             // For Java versions prior to Java 6 use the next:
             // System.arraycopy(original[i], 0, result[i], 0, original[i].length);
         }
@@ -137,7 +145,7 @@ public class Action4Connects {
     }
 
     private Node getNode() {
-        if(root.value == null) {
+        if(root.action < 0) {
             alphaBetaPruning(root);
         }
         return root;
@@ -163,14 +171,48 @@ public class Action4Connects {
         return (char)(player + 1 < 'z' ? player + 1 : player - 1);
     }
 
+
+    private Double alphaBetaPruning(final Node node) {
+        return alphaBetaPruning(node, 0);
+    }
+
+    public static void printBoard(char[][] board) {
+        System.out.println("#################");
+        for (char[] row : board) {
+            System.out.println(new String(row));
+        }
+        System.out.println("#################");
+    }
+
     private Double alphaBetaPruning(final Node node, final int deph) {
-        if(deph >= maxDeph) {
-            node.value = heuristicFunction.apply(node.board);
+        // finish current tree if current node is winner or max deph reached
+        // the parent node can not be a winner, since game would not have started
+        boolean playerHasWon = node.parent != null ? playerWins(node.board, node.changed, player) : false;
+        if(playerHasWon) { 
+            return node.value = !node.maximizingPlayer ? 1.0 : -1.0;
+        } else if(deph >= maxDeph) {
+            return node.value = heuristicFunction.apply(node.board);
         }
 
-        // no need to get all children ... TODO
-//        List<Node> children = node.getChildren(node.maximizingPlayer ? player : otherPlayer);
+        // extend tree with possible actions and return best value
+        for(int column = 0; column < board.length; column++) {
+            if(!columnIsFull(node.board, column)) {
+                Position change = getNewPosition(column, board);
+                Node child = new Node(addToPosition(change, board, player), node, !node.maximizingPlayer);
+                child.changed =  change;
+                child.action = column;
+                child.value = alphaBetaPruning(child, deph + 1);
 
-        return 0.0;
+                if(
+                    (node.maximizingPlayer && child.value > node.value) ||
+                    (!node.maximizingPlayer && child.value < node.value)
+                ) {
+                    node.value = child.value;
+                    node.action = child.action;
+                }
+            }
+        }
+
+        return node.value;
     }
 }
