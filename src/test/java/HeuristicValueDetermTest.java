@@ -15,18 +15,80 @@ public class HeuristicValueDetermTest {
     private char[][] board;
 
     @Test
-    public void testLinerHeuristicValue() {
-        HeuristicValueDeterm heuristicValueDeterm = new HeuristicValueDeterm(board, 'x');
+    public void testAppendGround() {
+        char[][] board = new char[][] {
+            {'-','x'},
+            {'x','-'},
+        };
 
-        double v1 = heuristicValueDeterm.lineHeuristicValue(new char[]{ '-', '-', '-','x', 'o', 'o' });
-        double v2 = heuristicValueDeterm.lineHeuristicValue(new char[]{ '-', '-', 'o','x', 'o', 'o' });
-        double v3 = heuristicValueDeterm.lineHeuristicValue(new char[]{ 'x', 'x', 'x','x', 'o', 'o' });
-        double v4 = heuristicValueDeterm.lineHeuristicValue(new char[]{ 'x', 'x', 'o','o', 'o', 'o' });
+        assertEquals(new char[][] {
+            {'-','x','#'},
+            {'x','-','#'},
+        }, HeuristicValueDeterm.appendGround(board));
+        assertEquals(new char[][] {
+            {'-','x'},
+            {'x','-'},
+        }, board);
+    }
 
-        assertEquals(1.0, v1, 0.02);
-        assertEquals(0.0, v2, 0.02);
-        assertEquals(101.0, v3, 0.02);
-        assertEquals(Double.NEGATIVE_INFINITY, v4, 0.02);
+    @Test
+    public void testHeuristicValueWonLost() {
+        char[][] board = new char[][] {
+            "-------".toCharArray(),
+            "-----xx".toCharArray(),
+            "----xoo".toCharArray(),
+            "---xxox".toCharArray(),
+            "---xoxo".toCharArray(),
+        };
+
+        assertEquals((Double)1.0, (new HeuristicValueDeterm('x', 'o')).apply(board));
+        assertEquals((Double)(-1.0), (new HeuristicValueDeterm('o', 'x')).apply(board));
+    }
+
+    @Test
+    public void testHeurisitcValueWonLostHorizontal() {
+        char[][] board = new char[][] {
+            "------o".toCharArray(),
+            "-----xx".toCharArray(),
+            "----xoo".toCharArray(),
+            "---xxxo".toCharArray(),
+            "---xoxo".toCharArray(),
+        };
+
+        assertEquals((Double)1.0, (new HeuristicValueDeterm('x', 'o')).apply(board));
+        assertEquals((Double)(-1.0), (new HeuristicValueDeterm('o', 'x')).apply(board));
+    }
+
+    @Test
+    public void testBetterPositioning() {
+        char[][] board = new char[][] {
+            "-------".toCharArray(),
+            "------x".toCharArray(),
+            "-------".toCharArray(),
+            "-----ox".toCharArray(),
+            "------o".toCharArray(),
+            "-------".toCharArray(),
+            "------o".toCharArray(),
+        };
+
+        assertEquals((Double).5, (new HeuristicValueDeterm('x', 'o')).apply(board));
+        assertEquals((Double)(-.5), (new HeuristicValueDeterm('o', 'x')).apply(board));
+    }
+
+    @Test
+    public void testBetterPositioningAfterOneMove() {
+        char[][] board = new char[][] {
+            "-------".toCharArray(),
+            "-------".toCharArray(),
+            "-------".toCharArray(),
+            "-----xo".toCharArray(), // wins horizontaly
+            "------x".toCharArray(), // wins horizontaly
+            "-------".toCharArray(),
+            "-------".toCharArray(),
+        };
+
+        assertEquals((Double).25, (new HeuristicValueDeterm('x', 'o')).apply(board));
+        assertEquals((Double)(-.25), (new HeuristicValueDeterm('o', 'x')).apply(board));
     }
 
     @Test
@@ -38,9 +100,9 @@ public class HeuristicValueDetermTest {
             "x-ooxx-".toCharArray()
         };
 
-        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
+//        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
 
-        assertEquals(16.0, value, 0.2);
+//        assertEquals(16.0, value, 0.2);
     }
     
     @Test
@@ -64,10 +126,10 @@ public class HeuristicValueDetermTest {
             "-----a".toCharArray(),
             "-----e".toCharArray()
         };
-        double v1 = (new HeuristicValueDeterm(board1, 'e')).evaluate();
-        double v2 = (new HeuristicValueDeterm(board2, 'e')).evaluate();
+//        double v1 = (new HeuristicValueDeterm(board1, 'e')).evaluate();
+//        double v2 = (new HeuristicValueDeterm(board2, 'e')).evaluate();
 
-        System.out.println(v1 + " - " + v2);
+//        System.out.println(v1 + " - " + v2);
     }
 
     @Test
@@ -79,9 +141,9 @@ public class HeuristicValueDetermTest {
             "-xoox--".toCharArray()
         };
 
-        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
+//        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
 
-        assertEquals(117.0, value, 0.2);
+//        assertEquals(117.0, value, 0.2);
     }
 
     @Test
@@ -93,9 +155,9 @@ public class HeuristicValueDetermTest {
             "-ooxo--".toCharArray()
         };
 
-        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
+//        double value = (new HeuristicValueDeterm(board, 'x')).evaluate();
 
-        assertEquals(Double.NEGATIVE_INFINITY, value, 0.2);
+//        assertEquals(Double.NEGATIVE_INFINITY, value, 0.2);
     }
 
 

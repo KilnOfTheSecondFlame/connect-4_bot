@@ -83,9 +83,6 @@ public class Action4Connects {
         this.board = board;
         this.otherPlayer = getOtherPlayer(board, player);
 
-        System.out.println("you: " + this.player);
-        System.out.println("otherPlayer: " + this.otherPlayer);
-
         this.root = new Node(board, null, true);
     }
 
@@ -120,14 +117,6 @@ public class Action4Connects {
     }
 
     public static boolean columnIsFull(final char[][] board, final int column) {
-        try {
-            new String(board[column]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-
-            printBoard(board);
-            System.out.println(column);
-            throw new RuntimeException(e);
-        }
         return board[column][0] != (Game.EMPTY);
     }
 
@@ -165,7 +154,7 @@ public class Action4Connects {
     /**
      * Find other player on the board
      */
-    private static char getOtherPlayer(char[][] board, char player) {
+    public static char getOtherPlayer(char[][] board, char player) {
         for(char[] column : board) {
             for(char cell : column) {
                 if(cell != '-' && cell != player) return cell;

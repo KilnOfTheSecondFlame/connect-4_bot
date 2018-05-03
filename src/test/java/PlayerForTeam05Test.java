@@ -43,7 +43,7 @@ public class PlayerForTeam05Test {
     }
 
     @Test
-    public void testBlockingAction() {/*
+    public void testBlockingAction() {
         int a1 = player.play(new char[][] {
             "------".toCharArray(),
             "------".toCharArray(),
@@ -70,21 +70,21 @@ public class PlayerForTeam05Test {
             "------".toCharArray(),
             "-----a".toCharArray(),
             "------".toCharArray(),
-        });*/
+        });
 
         int a4 = player.play(new char[][] {
-            "--eaaa".toCharArray(),
-            "------".toCharArray(),
-            "-----e".toCharArray(),
-            "-----e".toCharArray(),
-            "------".toCharArray(),
-            "-----e".toCharArray(),
-            "------".toCharArray(),
+            "--eaaa#".toCharArray(),
+            "------#".toCharArray(),
+            "-----e#".toCharArray(),
+            "-----e#".toCharArray(),
+            "------#".toCharArray(),
+            "-----e#".toCharArray(),
+            "------#".toCharArray(),
         });
-/*
-        assertEquals(0, a1);
-        assertEquals(1, a2);
-        assertEquals(4, a3);*/
+
+/*        assertEquals(0, a1);
+        assertEquals(1, a2);*/
+        assertEquals(4, a3);
         assertEquals(4, a4);
     }
 
