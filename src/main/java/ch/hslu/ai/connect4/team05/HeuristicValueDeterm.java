@@ -170,7 +170,7 @@ public class HeuristicValueDeterm implements Function<char[][], Double> {
         if((value = this.matchNextMoveWin[OTHER_PLAYER].match(board)) > 0) return -value;
 
         if((value = comparePlayer(board, this.twoEmptySpace, 0.5)) != 0.0) return value;
-        if((value = comparePlayer(board, this.threeEmptySpace, 0.25)) != 0.0) return value;
+//        if((value = comparePlayer(board, this.threeEmptySpace, 0.25)) != 0.0) return value;
 
         return value;
     }

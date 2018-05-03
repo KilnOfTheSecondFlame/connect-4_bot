@@ -19,11 +19,11 @@ public class PlayerForTeam05 extends Player {
     private Function<char[][], Double> heuristicFunction;
     
     public PlayerForTeam05() {
-        this(5, true);
+        this(3, true, "Player for Team05");
     }
 
-    public PlayerForTeam05(int maxDeph, boolean complexHeuristic) {
-        super("Player for Team05");
+    public PlayerForTeam05(int maxDeph, boolean complexHeuristic, String name) {
+        super(name);
 
         this.complexHeuristic = complexHeuristic;
         this.maxDeph = maxDeph;

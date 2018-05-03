@@ -194,11 +194,13 @@ public class Action4Connects {
             return node.value = heuristicFunction.apply(node.board);
         }
 
+        Node child = null;
+
         // extend tree with possible actions and return best value
         for(int column = 0; column < node.board.length; column++) {
             if(!columnIsFull(node.board, column)) {
                 Position change = getNewPosition(column, node.board);
-                Node child = new Node(addToPosition(change, node.board, node.maximizingPlayer ? player : otherPlayer), node, !node.maximizingPlayer);
+                child = new Node(addToPosition(change, node.board, node.maximizingPlayer ? player : otherPlayer), node, !node.maximizingPlayer);
                 child.changed = change;
                 child.value = alphaBetaPruning(child, deph + 1);
 
@@ -215,6 +217,9 @@ public class Action4Connects {
                 }
             }
         }
+
+        // mini fix to prevent action -1 pop up
+        if(node.action < 0 && child != null) node.action = child.action;
 
         return node.value;
     }
