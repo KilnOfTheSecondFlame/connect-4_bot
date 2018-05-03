@@ -1,4 +1,6 @@
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -33,17 +35,27 @@ public class Connect4 {
 		// Create players:
 		Player[] players = {
 			new RandomPlayer("Captain Awesome"),
-			new RandomPlayer("Captain Obvious"),
-			new RandomPlayer("Chuck Norris"),
-			new RandomPlayer("Homer Simpson"),
+//			new RandomPlayer("Captain Obvious"),
+//			new RandomPlayer("Chuck Norris"),
+//			new RandomPlayer("Homer Simpson"),
 			new PlayerForTeam05()
 		};
 		
 		// Start a single game with GUI:	
-		singleGameMode(players[0], players[4]);
+//		singleGameMode(players[0], players[4]);
 		
 		// Start a tournament with many rounds:
-		//tournamentMode(players, 1000);
+		Instant now = Instant.now();
+		tournamentMode(players, 100);
+		System.out.println("Time: " + Duration.between(now, Instant.now()).toString());
+
+
+		now = Instant.now();
+		tournamentMode(new Player[] {
+			new RandomPlayer("Captain Awesome"),
+			new PlayerForTeam05(6, false, "Player for Team05 - stupid")
+		}, 100);
+		System.out.println("Time: " + Duration.between(now, Instant.now()).toString());
 	}
 	
 	/**
